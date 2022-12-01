@@ -1,8 +1,8 @@
 ﻿namespace AOC2022.Exceptions;
 
-public class ChallangeNotFoundException : Exception
+public class ChallengeNotFoundException : Exception
 {
-    public ChallangeNotFoundException(int id) : base($"A challange for id {id} could not be found.") { }
+    public ChallengeNotFoundException(int id) : base($"A challenge for id {id} could not be found.") { }
 }
 
 public class PartDoesNotExistException : Exception

@@ -1,4 +1,4 @@
-﻿using AOC2022.Challange;
+﻿using AOC2022.Challenges;
 using AOC2022.Exceptions;
 using AOC2022.Extensions;
 using System.Diagnostics;
@@ -21,10 +21,10 @@ namespace AOC2022
                 return 2;
             }
 
-            IChallange challange;
+            IChallenge challenge;
             try
             {
-                challange = GetChallange(options.Challange);
+                challenge = GetChallenge(options.Challenge);
             }
             catch (UnreachableException e)
             {
@@ -37,7 +37,7 @@ namespace AOC2022
             int answer;
             try
             {
-                answer = await challange.PerformChallange(stream, options.Part);
+                answer = await challenge.PerformChallenge(stream, options.Part);
             }
             catch (PartDoesNotExistException e)
             {
@@ -60,10 +60,10 @@ namespace AOC2022
             return 0;
         }
 
-        private static IChallange GetChallange(int id) => id switch
+        private static IChallenge GetChallenge(int id) => id switch
         {
-            1 => new Challange1(),
-            _ => throw new ChallangeNotFoundException(id),
+            1 => new Challenge1(),
+            _ => throw new ChallengeNotFoundException(id),
         };
     }
 }

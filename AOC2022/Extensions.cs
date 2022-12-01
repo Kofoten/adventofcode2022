@@ -1,14 +1,14 @@
-﻿using AOC2022.Challange;
+﻿using AOC2022.Challenges;
 using AOC2022.Exceptions;
 
 namespace AOC2022.Extensions;
 
 public static class Extensions
 {
-    public static async Task<int> PerformChallange(this IChallange challange, Stream input, int part) => part switch
+    public static async Task<int> PerformChallenge(this IChallenge challenge, Stream input, int part) => part switch
     {
-        1 => await challange.Part1(input),
-        2 => await challange.Part2(input),
+        1 => await challenge.Part1(input),
+        2 => await challenge.Part2(input),
         _ => throw new PartDoesNotExistException(part),
     };
 }

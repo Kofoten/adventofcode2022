@@ -1,8 +1,6 @@
-﻿using AOC2022.Exceptions;
-
-namespace AOC2022.Challange
+﻿namespace AOC2022.Challenges
 {
-    public class Challange1 : IChallange
+    public class Challenge1 : IChallenge
     {
         public async Task<int> Part1(Stream input) => await GetElfCalorieCounts(input).MaxAsync();
 

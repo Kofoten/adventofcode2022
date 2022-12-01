@@ -2,21 +2,21 @@
 
 namespace AOC2022
 {
-    public record Options(int Challange, int Part, FileInfo InputFile)
+    public record Options(int Challenge, int Part, FileInfo InputFile)
     {
         public static bool TryParse(string[] args, [NotNullWhen(true)] out Options? options, [NotNullWhen(false)] out string? reason)
         {
             if (args.Length < 2 || args.Length > 3)
             {
                 options = null;
-                reason = "Invalid number of arguments, allowed arguments are: challange (positional: index 0, integer), part (positional: index 1, integer), inputFile (optional, positional: index 2, filename).";
+                reason = "Invalid number of arguments, allowed arguments are: challenge (positional: index 0, integer), part (positional: index 1, integer), inputFile (optional, positional: index 2, filename).";
                 return false;
             }
 
-            if (!int.TryParse(args[0], out var challange) || challange < 1 || challange > 25)
+            if (!int.TryParse(args[0], out var challenge) || challenge < 1 || challenge > 25)
             {
                 options = null;
-                reason = "Challange (positional argument 0) must be a valid integer with a minimum value of 1 and a maximum value of 25.";
+                reason = "Challenge (positional argument 0) must be a valid integer with a minimum value of 1 and a maximum value of 25.";
                 return false;
             }
 
@@ -27,12 +27,12 @@ namespace AOC2022
                 return false;
             }
 
-            var inputFile = new FileInfo($"./input/challange{challange}/input.txt");
+            var inputFile = new FileInfo($"./input/challenge{challenge}/input.txt");
             if (args.Length > 2)
             {
                 if (args[2] == "test")
                 {
-                    inputFile = new FileInfo($"./input/challange{challange}/test.txt");
+                    inputFile = new FileInfo($"./input/challenge{challenge}/test.txt");
                 }
                 else if (Path.Exists(args[2]))
                 {
@@ -46,7 +46,7 @@ namespace AOC2022
                 }
             }
 
-            options = new Options(challange, part, inputFile);
+            options = new Options(challenge, part, inputFile);
             reason = null;
             return true;
         }

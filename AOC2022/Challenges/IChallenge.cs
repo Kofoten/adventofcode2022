@@ -1,6 +1,6 @@
-﻿namespace AOC2022.Challange
+﻿namespace AOC2022.Challenges
 {
-    public interface IChallange
+    public interface IChallenge
     {
         Task<int> Part1(Stream input);
         Task<int> Part2(Stream input);
