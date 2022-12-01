@@ -1,7 +1,4 @@
-﻿using AOC2022.Challenges;
-using AOC2022.Exceptions;
-using AOC2022.Extensions;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace AOC2022
 {

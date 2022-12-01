@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace AOC2022
+﻿namespace AOC2022
 {
     public record Options(int Challenge, int Part, FileInfo InputFile)
     {

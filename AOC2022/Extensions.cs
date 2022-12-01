@@ -1,7 +1,4 @@
-﻿using AOC2022.Challenges;
-using AOC2022.Exceptions;
-
-namespace AOC2022.Extensions;
+﻿namespace AOC2022.Extensions;
 
 public static class Extensions
 {
