@@ -1,36 +1,35 @@
-﻿namespace AOC2022.Challenges.Challenge1
+﻿namespace AOC2022.Challenges.Challenge1;
+
+public class Challenge1 : IChallenge
 {
-    public class Challenge1 : IChallenge
+    public async Task<int> Part1(Stream input) => await GetElfCalorieCounts(input).MaxAsync();
+
+    public async Task<int> Part2(Stream input) => await GetElfCalorieCounts(input).OrderByDescending(x => x).Take(3).SumAsync();
+
+    private static async IAsyncEnumerable<int> GetElfCalorieCounts(Stream input)
     {
-        public async Task<int> Part1(Stream input) => await GetElfCalorieCounts(input).MaxAsync();
+        using var reader = new StreamReader(input);
 
-        public async Task<int> Part2(Stream input) => await GetElfCalorieCounts(input).OrderByDescending(x => x).Take(3).SumAsync();
-
-        private static async IAsyncEnumerable<int> GetElfCalorieCounts(Stream input)
+        var calorieCount = 0;
+        while (!reader.EndOfStream)
         {
-            using var reader = new StreamReader(input);
+            var line = await reader.ReadLineAsync();
 
-            var calorieCount = 0;
-            while (!reader.EndOfStream)
+            if (string.IsNullOrEmpty(line))
             {
-                var line = await reader.ReadLineAsync();
-
-                if (string.IsNullOrEmpty(line))
-                {
-                    yield return calorieCount;
-                    calorieCount = 0;
-                }
-                else if (int.TryParse(line, out var calories))
-                {
-                    calorieCount += calories;
-                }
-                else
-                {
-                    throw new InvalidOperationException($"Input contains invalid data.");
-                }
+                yield return calorieCount;
+                calorieCount = 0;
             }
-
-            yield return calorieCount;
+            else if (int.TryParse(line, out var calories))
+            {
+                calorieCount += calories;
+            }
+            else
+            {
+                throw new InvalidOperationException($"Input contains invalid data.");
+            }
         }
+
+        yield return calorieCount;
     }
 }
