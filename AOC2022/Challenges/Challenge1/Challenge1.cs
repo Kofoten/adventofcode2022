@@ -1,4 +1,4 @@
-﻿namespace AOC2022.Challenges
+﻿namespace AOC2022.Challenges.Challenge1
 {
     public class Challenge1 : IChallenge
     {

@@ -21,9 +21,9 @@ namespace AOC2022
             IChallenge challenge;
             try
             {
-                challenge = GetChallenge(options.Challenge);
+                challenge = ChallengeProvider.GetChallenge(options.Challenge);
             }
-            catch (UnreachableException e)
+            catch (ChallengeNotFoundException e)
             {
                 Console.WriteLine($"FATAL: {e.Message}");
                 return 3;
@@ -56,11 +56,5 @@ namespace AOC2022
             Console.WriteLine(answer);
             return 0;
         }
-
-        private static IChallenge GetChallenge(int id) => id switch
-        {
-            1 => new Challenge1(),
-            _ => throw new ChallengeNotFoundException(id),
-        };
     }
 }
