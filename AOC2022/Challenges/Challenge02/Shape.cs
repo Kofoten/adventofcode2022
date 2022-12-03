@@ -1,4 +1,4 @@
-﻿namespace AOC2022.Challenges.Challenge2;
+﻿namespace AOC2022.Challenges.Challenge02;
 
 public enum Shape
 {

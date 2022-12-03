@@ -1,11 +1,11 @@
-﻿namespace AOC2022.Challenges.Challenge2;
+﻿namespace AOC2022.Challenges.Challenge02;
 
-public class Challenge2 : IChallenge
+public class Challenge02 : IChallenge
 {
-    public async Task<int> Part1(Stream input)
+    public async Task<int> Part1(InputReader reader)
     {
         var result = 0;
-        await foreach (var (param, value) in GetRoundResults(input))
+        await foreach (var (param, value) in GetRoundResults(reader))
         {
             var opponent = ConvertFromChar(param);
             var me = value switch
@@ -22,10 +22,10 @@ public class Challenge2 : IChallenge
         return result;
     }
 
-    public async Task<int> Part2(Stream input)
+    public async Task<int> Part2(InputReader reader)
     {
         var result = 0;
-        await foreach (var (param, value) in GetRoundResults(input))
+        await foreach (var (param, value) in GetRoundResults(reader))
         {
             var opponent = ConvertFromChar(param);
             var me = value switch
@@ -42,15 +42,13 @@ public class Challenge2 : IChallenge
         return result;
     }
 
-    public static async IAsyncEnumerable<KeyValuePair<char, char>> GetRoundResults(Stream input)
+    public static async IAsyncEnumerable<KeyValuePair<char, char>> GetRoundResults(InputReader reader)
     {
-        using var reader = new StreamReader(input);
-        while (!reader.EndOfStream)
+        await foreach (var line in reader.ReadAllLinesAsync())
         {
-            var line = await reader.ReadLineAsync();
             if (string.IsNullOrEmpty(line) || line.Length != 3)
             {
-                throw new InvalidOperationException($"Input contains invalid data.");
+                throw new InvalidDataException($"Input contains invalid data.");
             }
 
             yield return new KeyValuePair<char, char>(line.First(), line.Last());

@@ -2,6 +2,6 @@
 
 public interface IChallenge
 {
-    Task<int> Part1(Stream input);
-    Task<int> Part2(Stream input);
+    Task<int> Part1(InputReader reader);
+    Task<int> Part2(InputReader reader);
 }

@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AOC2022", "AOC2022\AOC2022.csproj", "{6E016BA8-3011-4240-A94B-4EE8A5C84F19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AOC2022", "AOC2022\AOC2022.csproj", "{6E016BA8-3011-4240-A94B-4EE8A5C84F19}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AOC2022Tests", "AOC2022Tests\AOC2022Tests.csproj", "{845A2B4D-037A-4393-B78D-FB903C6F1EF7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{6E016BA8-3011-4240-A94B-4EE8A5C84F19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E016BA8-3011-4240-A94B-4EE8A5C84F19}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E016BA8-3011-4240-A94B-4EE8A5C84F19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{845A2B4D-037A-4393-B78D-FB903C6F1EF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{845A2B4D-037A-4393-B78D-FB903C6F1EF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{845A2B4D-037A-4393-B78D-FB903C6F1EF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{845A2B4D-037A-4393-B78D-FB903C6F1EF7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
