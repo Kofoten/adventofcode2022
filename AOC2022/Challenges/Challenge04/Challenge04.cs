@@ -4,11 +4,43 @@ public class Challenge04 : IChallenge
 {
     public async Task<int> Part1(InputReader reader)
     {
-        throw new PartNotImplementedException(1);
+        var result = 0;
+
+        await foreach (var line in reader.ReadAllLinesAsync())
+        {
+            var parts = line.Split(',');
+            var range1 = SectionRange.Parse(parts[0]);
+            var range2 = SectionRange.Parse(parts[1]);
+
+            if (range1.Contains(range2))
+            {
+                result++;
+            }
+            else if (range2.Contains(range1))
+            {
+                result++;
+            }
+        }
+
+        return result;
     }
 
     public async Task<int> Part2(InputReader reader)
     {
-        throw new PartNotImplementedException(2);
+        var result = 0;
+
+        await foreach (var line in reader.ReadAllLinesAsync())
+        {
+            var parts = line.Split(',');
+            var range1 = SectionRange.Parse(parts[0]);
+            var range2 = SectionRange.Parse(parts[1]);
+
+            if (range1.Intersects(range2))
+            {
+                result++;
+            }
+        }
+
+        return result;
     }
 }
