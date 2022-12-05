@@ -2,7 +2,7 @@
 
 public class Challenge02 : IChallenge
 {
-    public async Task<int> Part1(InputReader reader)
+    public async Task<string> Part1(InputReader reader)
     {
         var result = 0;
         await foreach (var (param, value) in GetRoundResults(reader))
@@ -19,10 +19,10 @@ public class Challenge02 : IChallenge
             result += me.GetScoreAgainst(opponent);
         }
 
-        return result;
+        return result.ToString();
     }
 
-    public async Task<int> Part2(InputReader reader)
+    public async Task<string> Part2(InputReader reader)
     {
         var result = 0;
         await foreach (var (param, value) in GetRoundResults(reader))
@@ -39,7 +39,7 @@ public class Challenge02 : IChallenge
             result += me.GetScoreAgainst(opponent);
         }
 
-        return result;
+        return result.ToString();
     }
 
     public static async IAsyncEnumerable<KeyValuePair<char, char>> GetRoundResults(InputReader reader)

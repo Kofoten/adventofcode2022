@@ -1,14 +1,122 @@
-﻿namespace AOC2022.Challenges.Challenge05;
+﻿using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
+
+namespace AOC2022.Challenges.Challenge05;
 
 public class Challenge05 : IChallenge
 {
-    public async Task<int> Part1(InputReader reader)
+    private static readonly Regex instructionRegex = new(@"^move ([0-9]+) from ([0-9]+) to ([0-9]+)$");
+
+    public async Task<string> Part1(InputReader reader)
     {
-        throw new PartNotImplementedException(1);
+        var cargo = await ReadCargo(reader);
+        await foreach (var line in reader.ReadAllLinesAsync())
+        {
+            var instruction = ParseInstruction(line);
+            for (int i = 0; i < instruction.Count; i++)
+            {
+                var value = cargo[instruction.From].Pop();
+                cargo[instruction.To].Push(value);
+            }
+        }
+
+        var result = string.Empty;
+        foreach (var stack in cargo)
+        {
+            result += stack.Pop();
+        }
+
+        return result;
     }
 
-    public async Task<int> Part2(InputReader reader)
+    public async Task<string> Part2(InputReader reader)
     {
-        throw new PartNotImplementedException(2);
+        var cargo = await ReadCargo(reader);
+        await foreach (var line in reader.ReadAllLinesAsync())
+        {
+            var instruction = ParseInstruction(line);
+            var current = new Stack<char>();
+            for (int i = 0; i < instruction.Count; i++)
+            {
+                var value = cargo[instruction.From].Pop();
+                current.Push(value);
+            }
+
+            foreach (var value in current)
+            {
+                cargo[instruction.To].Push(value);
+            }
+        }
+
+        var result = string.Empty;
+        foreach (var stack in cargo)
+        {
+            result += stack.Pop();
+        }
+
+        return result;
+    }
+
+    private static Instruction ParseInstruction(string instruction)
+    {
+        var match = instructionRegex.Match(instruction);
+        if (match.Success)
+        {
+            var count = int.Parse(match.Groups[1].Value);
+            var from = int.Parse(match.Groups[2].Value) - 1;
+            var to = int.Parse(match.Groups[3].Value) - 1;
+            return new Instruction(count, from, to);
+        }
+
+        throw new InvalidDataException("Input contains invalid data");
+    }
+
+    private static async Task<Stack<char>[]> ReadCargo(InputReader reader)
+    {
+        var stackCount = 0;
+        var cargo = new Stack<string>();
+        while (true)
+        {
+            var line = await reader.ReadLineAsync();
+            if (line == string.Empty)
+            {
+                break;
+            }
+
+            if (line.First(x => x != ' ') != '[')
+            {
+                stackCount = (int)char.GetNumericValue(line.TrimEnd().Last());
+                continue;
+            }
+
+            cargo.Push(line);
+        }
+
+        var stacks = InitializeArray(stackCount, () => new Stack<char>());
+        while (cargo.Count > 0)
+        {
+            var line = cargo.Pop();
+            for (int i = 0; i < line.Length; i++)
+            {
+                if (line[i] == '[')
+                {
+                    stacks[i / 4].Push(line[i + 1]);
+                }
+            }
+        }
+
+        return stacks;
+    }
+
+    private static T[] InitializeArray<T>(int size, Func<T> valueFactory)
+    {
+        var array = new T[size];
+        for (int i = 0; i < size; i++)
+        {
+            array[i] = valueFactory();
+        }
+        return array;
     }
 }
+
+public record Instruction(int Count, int From, int To);

@@ -2,9 +2,17 @@
 
 public class Challenge01 : IChallenge
 {
-    public async Task<int> Part1(InputReader reader) => await GetElfCalorieCounts(reader).MaxAsync();
+    public async Task<string> Part1(InputReader reader)
+    {
+        var result = await GetElfCalorieCounts(reader).MaxAsync();
+        return result.ToString();
+    }
 
-    public async Task<int> Part2(InputReader reader) => await GetElfCalorieCounts(reader).OrderByDescending(x => x).Take(3).SumAsync();
+    public async Task<string> Part2(InputReader reader)
+    {
+        var result = await GetElfCalorieCounts(reader).OrderByDescending(x => x).Take(3).SumAsync();
+        return result.ToString();
+    }
 
     private static async IAsyncEnumerable<int> GetElfCalorieCounts(InputReader reader)
     {

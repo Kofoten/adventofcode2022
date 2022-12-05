@@ -2,7 +2,7 @@
 
 public class Challenge03 : IChallenge
 {
-    public async Task<int> Part1(InputReader reader)
+    public async Task<string> Part1(InputReader reader)
     {
         var result = 0;
 
@@ -16,10 +16,10 @@ public class Challenge03 : IChallenge
             result += GetPriority(sharedItem);
         }
 
-        return result;
+        return result.ToString();
     }
 
-    public async Task<int> Part2(InputReader reader)
+    public async Task<string> Part2(InputReader reader)
     {
         var result = 0;
         var init = await reader.ReadLineAsync();
@@ -38,7 +38,8 @@ public class Challenge03 : IChallenge
             }
         }
 
-        return result + GetPriority(common.First());
+        result += GetPriority(common.First());
+        return result.ToString();
     }
 
     private static int GetPriority(char c)

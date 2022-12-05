@@ -3,21 +3,21 @@
 public class Result
 {
     public int Code { get; private init; }
-    public int? Answer { get; private init; }
+    public string? Answer { get; private init; }
     public string? Message { get; private init; }
 
-    public Result(int code, int? answer, string? message)
+    public Result(int code, string? answer, string? message)
     {
         this.Code = code;
         this.Answer = answer;
         this.Message = message;
     }
 
-    public bool IsSuccess([NotNullWhen(true)] out int? answer, [NotNullWhen(false)] out string? message)
+    public bool IsSuccess([NotNullWhen(true)] out string? answer, [NotNullWhen(false)] out string? message)
     {
-        if (Code == 0 && Answer.HasValue)
+        if (Code == 0 && Answer is not null)
         {
-            answer = Answer.Value;
+            answer = Answer;
             message = null;
             return true;
         }
@@ -27,7 +27,7 @@ public class Result
         return false;
     }
 
-    public static Result Success(int answer) =>  new(0, answer, null);
+    public static Result Success(string answer) =>  new(0, answer, null);
 
     public static Result Error(int code, string message) => new(code, null, message);
 }

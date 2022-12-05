@@ -23,13 +23,13 @@ public class Runtime
         }
         catch (ChallengeNotFoundException e)
         {
-            return Result.Error(2, e.Message);
+            return Result.Error(3, e.Message);
         }
 
         using var stream = options.InputFile.OpenRead();
         using var reader = new InputReader(stream);
 
-        int answer;
+        string answer;
         try
         {
             answer = await challenge.PerformChallenge(reader, options.Part);
@@ -40,7 +40,7 @@ public class Runtime
         }
         catch (PartNotImplementedException e)
         {
-            return Result.Error(4, e.Message);
+            return Result.Error(5, e.Message);
         }
 
         return Result.Success(answer);
