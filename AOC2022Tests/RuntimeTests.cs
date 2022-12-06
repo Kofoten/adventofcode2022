@@ -13,22 +13,31 @@ namespace AOC2022Tests
         [DataRow(1, 1, false, "72718", DisplayName = "Day 1 Part 1 Actual")]
         [DataRow(1, 2, true, "45000", DisplayName = "Day 1 Part 2 Test")]
         [DataRow(1, 2, false, "213089", DisplayName = "Day 1 Part 2 Actual")]
+
         [DataRow(2, 1, true, "15", DisplayName = "Day 2 Part 1 Test")]
         [DataRow(2, 1, false, "11603", DisplayName = "Day 2 Part 1 Actual")]
         [DataRow(2, 2, true, "12", DisplayName = "Day 2 Part 2 Test")]
         [DataRow(2, 2, false, "12725", DisplayName = "Day 2 Part 2 Actual")]
+
         [DataRow(3, 1, true, "157", DisplayName = "Day 3 Part 1 Test")]
         [DataRow(3, 1, false, "8233", DisplayName = "Day 3 Part 1 Actual")]
         [DataRow(3, 2, true, "70", DisplayName = "Day 3 Part 2 Test")]
         [DataRow(3, 2, false, "2821", DisplayName = "Day 3 Part 2 Actual")]
+
         [DataRow(4, 1, true, "2", DisplayName = "Day 4 Part 1 Test")]
         [DataRow(4, 1, false, "464", DisplayName = "Day 4 Part 1 Actual")]
         [DataRow(4, 2, true, "4", DisplayName = "Day 4 Part 2 Test")]
         [DataRow(4, 2, false, "770", DisplayName = "Day 4 Part 2 Actual")]
+
         [DataRow(5, 1, true, "CMZ", DisplayName = "Day 5 Part 1 Test")]
         [DataRow(5, 1, false, "WSFTMRHPP", DisplayName = "Day 5 Part 1 Actual")]
         [DataRow(5, 2, true, "MCD", DisplayName = "Day 5 Part 2 Test")]
         [DataRow(5, 2, false, "GSLCMFBRP", DisplayName = "Day 5 Part 2 Actual")]
+
+        [DataRow(6, 1, true, "7", DisplayName = "Day 6 Part 1 Test")]
+        [DataRow(6, 1, false, "1702", DisplayName = "Day 6 Part 1 Actual")]
+        [DataRow(6, 2, true, "19", DisplayName = "Day 6 Part 2 Test")]
+        [DataRow(6, 2, false, "3559", DisplayName = "Day 6 Part 2 Actual")]
         public async Task TestRun(int challange, int part, bool useTestFile, string expected)
         {
             var inputProvider = InputProvider.Create();

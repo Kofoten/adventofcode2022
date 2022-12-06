@@ -5,14 +5,12 @@ namespace AOC2022.Challenges.Challenge05;
 
 public class Challenge05 : IChallenge
 {
-    private static readonly Regex instructionRegex = new(@"^move ([0-9]+) from ([0-9]+) to ([0-9]+)$");
-
     public async Task<string> Part1(InputReader reader)
     {
         var cargo = await ReadCargo(reader);
         await foreach (var line in reader.ReadAllLinesAsync())
         {
-            var instruction = ParseInstruction(line);
+            var instruction = Instruction.Parse(line);
             for (int i = 0; i < instruction.Count; i++)
             {
                 var value = cargo[instruction.From].Pop();
@@ -34,7 +32,7 @@ public class Challenge05 : IChallenge
         var cargo = await ReadCargo(reader);
         await foreach (var line in reader.ReadAllLinesAsync())
         {
-            var instruction = ParseInstruction(line);
+            var instruction = Instruction.Parse(line);
             var current = new Stack<char>();
             for (int i = 0; i < instruction.Count; i++)
             {
@@ -55,20 +53,6 @@ public class Challenge05 : IChallenge
         }
 
         return result;
-    }
-
-    private static Instruction ParseInstruction(string instruction)
-    {
-        var match = instructionRegex.Match(instruction);
-        if (match.Success)
-        {
-            var count = int.Parse(match.Groups[1].Value);
-            var from = int.Parse(match.Groups[2].Value) - 1;
-            var to = int.Parse(match.Groups[3].Value) - 1;
-            return new Instruction(count, from, to);
-        }
-
-        throw new InvalidDataException("Input contains invalid data");
     }
 
     private static async Task<Stack<char>[]> ReadCargo(InputReader reader)
@@ -118,5 +102,3 @@ public class Challenge05 : IChallenge
         return array;
     }
 }
-
-public record Instruction(int Count, int From, int To);
