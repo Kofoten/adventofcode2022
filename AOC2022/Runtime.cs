@@ -1,4 +1,6 @@
-﻿namespace AOC2022;
+﻿using System.Diagnostics;
+
+namespace AOC2022;
 
 public class Runtime
 {
@@ -28,21 +30,26 @@ public class Runtime
 
         using var stream = options.InputFile.OpenRead();
         using var reader = new InputReader(stream);
+        var stopwatch = new Stopwatch();
 
         string answer;
         try
         {
+            stopwatch.Start();
             answer = await challenge.PerformChallenge(reader, options.Part);
+            stopwatch.Stop();
         }
         catch (PartDoesNotExistException e)
         {
-            return Result.Error(4, e.Message);
+            stopwatch.Stop();
+            return Result.Error(4, e.Message, stopwatch.Elapsed);
         }
         catch (PartNotImplementedException e)
         {
-            return Result.Error(5, e.Message);
+            stopwatch.Stop();
+            return Result.Error(5, e.Message, stopwatch.Elapsed);
         }
 
-        return Result.Success(answer);
+        return Result.Success(answer, stopwatch.Elapsed);
     }
 }

@@ -18,6 +18,11 @@ internal class Program
             if (result.IsSuccess(out var answer, out var error))
             {
                 Console.WriteLine(answer);
+
+#if DEBUG
+                Console.WriteLine($"Processingtime {result.ProcessingTime}");
+#endif
+
                 return 0;
             }
 
