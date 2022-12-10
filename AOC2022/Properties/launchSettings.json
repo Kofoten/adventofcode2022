@@ -2,7 +2,7 @@
   "profiles": {
     "AOC2022": {
       "commandName": "Project",
-      "commandLineArgs": "4 2 \"C:\\Users\\RasmusSteen\\frasse-input.txt\""
+      "commandLineArgs": "10 2"
     }
   }
 }

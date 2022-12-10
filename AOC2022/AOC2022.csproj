@@ -12,58 +12,64 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="input\challenge1\input.txt">
+    <None Update="input\challenge10\input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="input\challenge1\test.txt">
+    <None Update="input\challenge10\test.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="input\challenge2\input.txt">
+    <None Update="input\challenge01\input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="input\challenge2\test.txt">
+    <None Update="input\challenge01\test.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="input\challenge3\input.txt">
+    <None Update="input\challenge02\input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="input\challenge3\test.txt">
+    <None Update="input\challenge02\test.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="input\challenge4\input.txt">
+    <None Update="input\challenge03\input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="input\challenge4\test.txt">
+    <None Update="input\challenge03\test.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="input\challenge5\input.txt">
+    <None Update="input\challenge04\input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="input\challenge5\test.txt">
+    <None Update="input\challenge04\test.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="input\challenge6\input.txt">
+    <None Update="input\challenge05\input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="input\challenge6\test.txt">
+    <None Update="input\challenge05\test.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="input\challenge7\input.txt">
+    <None Update="input\challenge06\input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="input\challenge7\test.txt">
+    <None Update="input\challenge06\test.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="input\challenge8\input.txt">
+    <None Update="input\challenge07\input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="input\challenge8\test.txt">
+    <None Update="input\challenge07\test.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="input\challenge9\input.txt">
+    <None Update="input\challenge08\input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="input\challenge9\test.txt">
+    <None Update="input\challenge08\test.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="input\challenge09\input.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="input\challenge09\test.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

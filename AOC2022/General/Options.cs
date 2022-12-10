@@ -1,6 +1,4 @@
-﻿using AOC2022.Input;
-
-namespace AOC2022.Options;
+﻿namespace AOC2022.Options;
 
 public record RuntimeOptions(int Challenge, int Part, FileInfo InputFile)
 {

@@ -9,6 +9,8 @@
             reader = new StreamReader(stream);
         }
 
+        public bool CanRead => !reader.EndOfStream;
+
         public async ValueTask<string> ReadLineAsync()
         {
             var line = await reader.ReadLineAsync();

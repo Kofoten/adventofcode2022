@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace AOC2022.Input;
+namespace AOC2022.IO;
 
 public class InputProvider
 {
@@ -24,7 +24,7 @@ public class InputProvider
     public bool TryGetInputFile(int challegeNumber, bool useTestData, [NotNullWhen(true)] out FileInfo? file)
     {
         var fileName = useTestData ? "test.txt" : "input.txt";
-        var folder = $"challenge{challegeNumber}";
+        var folder = $"challenge{challegeNumber:D2}";
         var path = Path.Combine(inputDirectory.FullName, folder, fileName);
 
         if (Path.Exists(path))
