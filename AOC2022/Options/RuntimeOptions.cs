@@ -40,7 +40,7 @@ public record RuntimeOptions(int Challenge, int Part, FileInfo InputFile)
 
     private static bool TryGetInputFile(int challangeNumber, string? value, [NotNullWhen(true)] out FileInfo? file)
     {
-        var inputProvider = InputProvider.Create();
+        var inputProvider = InputFileProvider.Create();
         if (value is null)
         {
             return inputProvider.TryGetInputFile(challangeNumber, false, out file);

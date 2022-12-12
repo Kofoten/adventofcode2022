@@ -2,7 +2,7 @@
 
 public class Challenge08 : IChallenge
 {
-    public async Task<string> Part1(InputReader reader)
+    public async Task<string> Part1(IInputReader reader)
     {
         var trees = new List<List<int>>();
         var visibility = new List<List<bool>>();
@@ -52,7 +52,7 @@ public class Challenge08 : IChallenge
         return visibility.SelectMany(x => x).Count(x => x).ToString();
     }
 
-    public async Task<string> Part2(InputReader reader)
+    public async Task<string> Part2(IInputReader reader)
     {
         var trees = new List<List<int>>();
 

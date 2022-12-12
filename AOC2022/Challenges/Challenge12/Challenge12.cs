@@ -4,7 +4,7 @@ public class Challenge12 : IChallenge
 {
     private const int LOWERCASE_A_CODE = 97;
 
-    public async Task<string> Part1(InputReader reader)
+    public async Task<string> Part1(IInputReader reader)
     {
         var start = Point.Zero;
         var peak = Point.Zero;
@@ -56,7 +56,7 @@ public class Challenge12 : IChallenge
         return grid[peak.Y][peak.X].StepsTo.ToString();
     }
 
-    public async Task<string> Part2(InputReader reader)
+    public async Task<string> Part2(IInputReader reader)
     {
         var peak = Point.Zero;
         var grid = new List<IList<Node>>();

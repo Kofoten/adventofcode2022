@@ -2,13 +2,13 @@
 
 public class Challenge06 : IChallenge
 {
-    public async Task<string> Part1(InputReader reader)
+    public async Task<string> Part1(IInputReader reader)
     {
         var line = await reader.ReadLineAsync();
         return FindFirstMarker(line, 4).ToString();
     }
 
-    public async Task<string> Part2(InputReader reader)
+    public async Task<string> Part2(IInputReader reader)
     {
         var line = await reader.ReadLineAsync();
         return FindFirstMarker(line, 14).ToString();

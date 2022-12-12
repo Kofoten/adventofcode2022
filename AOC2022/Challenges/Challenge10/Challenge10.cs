@@ -2,7 +2,7 @@
 
 public class Challenge10 : IChallenge
 {
-    public async Task<string> Part1(InputReader reader)
+    public async Task<string> Part1(IInputReader reader)
     {
         var x = 1;
         var timeout = 0;
@@ -48,7 +48,7 @@ public class Challenge10 : IChallenge
         return result.ToString();
     }
 
-    public async Task<string> Part2(InputReader reader)
+    public async Task<string> Part2(IInputReader reader)
     {
         var ticks = 240;
         var x = 1;

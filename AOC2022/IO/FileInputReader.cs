@@ -1,12 +1,12 @@
 ﻿namespace AOC2022.IO
 {
-    public class InputReader : IDisposable
+    public class FileInputReader : IDisposable, IInputReader
     {
         private readonly StreamReader reader;
 
-        public InputReader(Stream stream)
+        private FileInputReader(StreamReader reader)
         {
-            reader = new StreamReader(stream);
+            this.reader = reader;
         }
 
         public bool CanRead => !reader.EndOfStream;
@@ -30,6 +30,17 @@
             }
         }
 
-        public void Dispose() => reader.Dispose();
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+            reader.Dispose();
+        }
+
+        public static FileInputReader Create(FileInfo file)
+        {
+            var stream = file.OpenRead();
+            var reader = new StreamReader(stream);
+            return new FileInputReader(reader);
+        }
     }
 }

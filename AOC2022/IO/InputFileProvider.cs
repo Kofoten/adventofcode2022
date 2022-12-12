@@ -2,11 +2,11 @@
 
 namespace AOC2022.IO;
 
-public class InputProvider
+public class InputFileProvider
 {
     private readonly DirectoryInfo inputDirectory;
 
-    public InputProvider(DirectoryInfo inputDirectory)
+    public InputFileProvider(DirectoryInfo inputDirectory)
     {
         this.inputDirectory = inputDirectory;
     }
@@ -37,9 +37,9 @@ public class InputProvider
         return false;
     }
 
-    public static InputProvider Create()
+    public static InputFileProvider Create()
     {
-        var assembly = Assembly.GetAssembly(typeof(InputProvider));
+        var assembly = Assembly.GetAssembly(typeof(InputFileProvider));
         if (assembly is null)
         {
             throw new InvalidOperationException($"Could not find assembly");
@@ -54,7 +54,7 @@ public class InputProvider
         var directory = new DirectoryInfo(Path.Combine(location, "input"));
         if (directory.Exists)
         {
-            return new InputProvider(directory);
+            return new InputFileProvider(directory);
         }
 
         throw new IOException($"Input directory not found");

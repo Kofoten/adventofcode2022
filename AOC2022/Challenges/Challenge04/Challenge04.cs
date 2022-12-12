@@ -2,7 +2,7 @@
 
 public class Challenge04 : IChallenge
 {
-    public async Task<string> Part1(InputReader reader)
+    public async Task<string> Part1(IInputReader reader)
     {
         var result = 0;
 
@@ -25,7 +25,7 @@ public class Challenge04 : IChallenge
         return result.ToString();
     }
 
-    public async Task<string> Part2(InputReader reader)
+    public async Task<string> Part2(IInputReader reader)
     {
         var result = 0;
 

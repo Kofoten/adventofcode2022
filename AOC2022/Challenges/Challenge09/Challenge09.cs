@@ -2,7 +2,7 @@
 
 public class Challenge09 : IChallenge
 {
-    public async Task<string> Part1(InputReader reader)
+    public async Task<string> Part1(IInputReader reader)
     {
         var head = Point.Zero;
         var tail = Point.Zero;
@@ -37,7 +37,7 @@ public class Challenge09 : IChallenge
         return visitations.Count.ToString();
     }
 
-    public async Task<string> Part2(InputReader reader)
+    public async Task<string> Part2(IInputReader reader)
     {
         var rope = new List<Point>()
         {

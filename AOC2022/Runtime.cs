@@ -28,8 +28,8 @@ public class Runtime
             return Result.Error(3, e.Message);
         }
 
-        using var stream = options.InputFile.OpenRead();
-        using var reader = new InputReader(stream);
+        
+        using var reader = FileInputReader.Create(options.InputFile);
         var stopwatch = new Stopwatch();
 
         string answer;

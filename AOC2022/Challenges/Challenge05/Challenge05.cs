@@ -5,7 +5,7 @@ namespace AOC2022.Challenges.Challenge05;
 
 public class Challenge05 : IChallenge
 {
-    public async Task<string> Part1(InputReader reader)
+    public async Task<string> Part1(IInputReader reader)
     {
         var cargo = await ReadCargo(reader);
         await foreach (var line in reader.ReadAllLinesAsync())
@@ -27,7 +27,7 @@ public class Challenge05 : IChallenge
         return result;
     }
 
-    public async Task<string> Part2(InputReader reader)
+    public async Task<string> Part2(IInputReader reader)
     {
         var cargo = await ReadCargo(reader);
         await foreach (var line in reader.ReadAllLinesAsync())
@@ -55,7 +55,7 @@ public class Challenge05 : IChallenge
         return result;
     }
 
-    private static async Task<Stack<char>[]> ReadCargo(InputReader reader)
+    private static async Task<Stack<char>[]> ReadCargo(IInputReader reader)
     {
         var stackCount = 0;
         var cargo = new Stack<string>();
@@ -76,7 +76,7 @@ public class Challenge05 : IChallenge
             cargo.Push(line);
         }
 
-        var stacks = InitializeArray(stackCount, () => new Stack<char>());
+        var stacks = EnumerableExtensions.Range(() => new Stack<char>(), stackCount).ToArray();
         while (cargo.Count > 0)
         {
             var line = cargo.Pop();
@@ -90,15 +90,5 @@ public class Challenge05 : IChallenge
         }
 
         return stacks;
-    }
-
-    private static T[] InitializeArray<T>(int size, Func<T> valueFactory)
-    {
-        var array = new T[size];
-        for (int i = 0; i < size; i++)
-        {
-            array[i] = valueFactory();
-        }
-        return array;
     }
 }

@@ -5,13 +5,13 @@ namespace AOC2022.Challenges.Challenge07;
 
 public class Challenge07 : IChallenge
 {
-    public async Task<string> Part1(InputReader reader)
+    public async Task<string> Part1(IInputReader reader)
     {
         var root = await ReadFileSystem(reader);
         return root.Flatten().Where(x => x.Size <= 100000).Sum(x => x.Size).ToString();
     }
 
-    public async Task<string> Part2(InputReader reader)
+    public async Task<string> Part2(IInputReader reader)
     {
         var totalDiskSpace = 70000000;
         var requiredDiskSpace = 30000000;
@@ -32,7 +32,7 @@ public class Challenge07 : IChallenge
         return sizes.Min().ToString();
     }
 
-    private static async Task<DirectoryItem> ReadFileSystem(InputReader reader)
+    private static async Task<DirectoryItem> ReadFileSystem(IInputReader reader)
     {
         var root = new DirectoryItem(string.Empty);
         var current = root;

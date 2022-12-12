@@ -5,7 +5,7 @@ namespace AOC2022.Challenges.Challenge11;
 
 public partial class Challenge11 : IChallenge
 {
-    public async Task<string> Part1(InputReader reader)
+    public async Task<string> Part1(IInputReader reader)
     {
         var monkeys = await ReadMonkeys(reader).ToListAsync();
 
@@ -25,7 +25,7 @@ public partial class Challenge11 : IChallenge
         return monkeys.OrderByDescending(x => x.Inspections).Take(2).Aggregate(1L, (acc, monkey) => acc * monkey.Inspections).ToString();
     }
 
-    public async Task<string> Part2(InputReader reader)
+    public async Task<string> Part2(IInputReader reader)
     {
         var monkeys = await ReadMonkeys(reader).ToListAsync();
         var a = monkeys.Aggregate(1, (acc, x) => acc * x.TestValue);
@@ -47,7 +47,7 @@ public partial class Challenge11 : IChallenge
         return ordered.Take(2).Aggregate(1L, (acc, monkey) => acc * monkey.Inspections).ToString();
     }
 
-    private static async IAsyncEnumerable<Monkey> ReadMonkeys(InputReader reader)
+    private static async IAsyncEnumerable<Monkey> ReadMonkeys(IInputReader reader)
     {
         var startingItemsStartingWith = "  Starting items:";
         var monkeyRegex = MonkeyRegex();

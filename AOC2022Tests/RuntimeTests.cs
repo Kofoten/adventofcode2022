@@ -70,7 +70,7 @@ namespace AOC2022Tests
         [DataRow(12, 2, false, "439", DisplayName = "Day 12 Part 2 Actual")]
         public async Task TestRun(int challange, int part, bool useTestFile, string expected)
         {
-            var inputProvider = InputProvider.Create();
+            var inputProvider = InputFileProvider.Create();
             var file = inputProvider.GetInputFile(challange, useTestFile);
             var options = new RuntimeOptions(challange, part, file);
             var runtime = new Runtime(options);
