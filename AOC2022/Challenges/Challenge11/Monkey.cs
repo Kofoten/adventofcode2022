@@ -7,15 +7,15 @@ public class Monkey
     private readonly int ifTrue;
     private readonly int ifFalse;
 
-    private readonly Func<int, int> operation;
+    private readonly Func<long, long> operation;
 
     public int Id { get; private init; }
     public int TestValue { get; private init; }
-    public Queue<int> Items { get; private init; }
+    public Queue<long> Items { get; private init; }
 
-    public int Inspections { get; private set; }
+    public long Inspections { get; private set; }
 
-    public Monkey(int id, Queue<int> items, Func<int, int> operation, int testValue, int ifTrue, int ifFalse)
+    public Monkey(int id, Queue<long> items, Func<long, long> operation, int testValue, int ifTrue, int ifFalse)
     {
         Id = id;
         TestValue = testValue;
@@ -25,11 +25,11 @@ public class Monkey
         this.ifFalse = ifFalse;
     }
 
-    public int Inspect(int value)
+    public long Inspect(long value)
     {
         Inspections++;
         return operation(value);
     }
 
-    public int ThrowItemTo(int value) => value % TestValue == 0 ? ifTrue : ifFalse;
+    public int ThrowItemTo(long value) => value % TestValue == 0 ? ifTrue : ifFalse;
 }

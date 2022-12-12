@@ -30,7 +30,7 @@ public partial class Challenge11 : IChallenge
         var monkeys = await ReadMonkeys(reader).ToListAsync();
         var a = monkeys.Aggregate(1, (acc, x) => acc * x.TestValue);
 
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 10000; i++)
         {
             foreach (var monkey in monkeys)
             {
@@ -72,7 +72,7 @@ public partial class Challenge11 : IChallenge
                 throw new InvalidDataException("Input contains invalid data");
             }
 
-            var items = new Queue<int>(currentLine[startingItemsStartingWith.Length..currentLine.Length].Trim().Split(", ").Select(int.Parse));
+            var items = new Queue<long>(currentLine[startingItemsStartingWith.Length..currentLine.Length].Trim().Split(", ").Select(long.Parse));
 
             currentLine = await reader.ReadLineAsync();
             var operationMatch = operationRegex.Match(currentLine);
@@ -82,12 +82,12 @@ public partial class Challenge11 : IChallenge
             }
 
             var func = operationMatch.Groups[1].Value;
-            if (!int.TryParse(operationMatch.Groups[2].Value, out var operationValue))
+            if (!long.TryParse(operationMatch.Groups[2].Value, out var operationValue))
             {
                 func += operationMatch.Groups[2].Value;
             }
             
-            Func<int, int> operation = func switch
+            Func<long, long> operation = func switch
             {
                 "*" => (x) => x * operationValue,
                 "+" => (x) => x + operationValue,
