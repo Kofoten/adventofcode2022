@@ -4,111 +4,79 @@ public class Challenge13 : IChallenge
 {
     public async Task<string> Part1(IInputReader reader)
     {
-        var result = 0;
+        var result = new HashSet<int>();
 
         for (int i = 1; reader.CanRead; i++)
         {
-            var leftStr = await reader.ReadLineAsync();
-            var rightStr = await reader.ReadLineAsync();
-            if (reader.CanRead)
+            var (left, right) = await reader.ReadPacketReaderPairAsync();
+
+            while (!left.EndOfPacket && !right.EndOfPacket)
             {
-                await reader.ReadLineAsync();
+                var leftToken = left.ReadNextToken();
+                var rightToken = right.ReadNextToken();
+                if (leftToken == rightToken)
+                {
+                    continue;
+                }
+
+                if (leftToken.Type == PacketTokenType.ListStart)
+                {
+                    if (rightToken.Type == PacketTokenType.ListEnd)
+                    {
+                        break;
+                    }
+
+                    if (rightToken.Type == PacketTokenType.Value)
+                    {
+                        right.CreateListAtCurrent();
+                        continue;
+                    }
+                }
+
+                if (rightToken.Type == PacketTokenType.ListStart)
+                {
+                    if (leftToken.Type == PacketTokenType.ListEnd)
+                    {
+                        result.Add(i);
+                        break;
+                    }
+
+                    if (leftToken.Type == PacketTokenType.Value)
+                    {
+                        left.CreateListAtCurrent();
+                        continue;
+                    }
+                }
+
+                if (leftToken.Type == PacketTokenType.ListEnd)
+                {
+                    result.Add(i);
+                    break;
+                }
+
+                if (rightToken.Type == PacketTokenType.ListEnd)
+                {
+                    break;
+                }
+
+                if (leftToken.Type == PacketTokenType.Value && rightToken.Type == PacketTokenType.Value)
+                {
+                    if (leftToken.Value < rightToken.Value)
+                    {
+                        result.Add(i);
+                    }
+
+                    break;
+                }
             }
 
-            var left = Packet.Parse(leftStr);
-            var right = Packet.Parse(rightStr);
-
-            if (left <= right)
+            if (left.EndOfPacket && !right.EndOfPacket)
             {
-                result += i;
+                result.Add(i);
             }
-
-            Console.WriteLine(left.ToString() + right.ToString());
-            //var leftLower = false;
-
-            //for (int j = 0; ; j++)
-            //{
-            //    if (j == left.Length && j < right.Length)
-            //    {
-            //        result += i;
-            //        leftLower = true;
-            //        break;
-            //    }
-            //    else if (j == right.Length)
-            //    {
-            //        break;
-            //    }
-            //    var cl = left[j];
-            //    var cr = right[j];
-            //    if (cl == cr)
-            //    {
-            //        continue;
-            //    }
-
-            //    if (cl == '[')
-            //    {
-            //        if (cr == ']')
-            //        {
-            //            break;
-            //        }
-
-            //        var x = right.Remove(j, 1);
-            //        right = x.Insert(j, $"[{cr}]");
-            //        continue;
-            //    }
-
-            //    if (cr == '[')
-            //    {
-            //        if (cl == ']')
-            //        {
-            //            leftLower = true;
-            //            result += i;
-            //            break;
-            //        }
-
-            //        var x = left.Remove(j, 1);
-            //        left = x.Insert(j, $"[{cl}]");
-            //        continue;
-            //    }
-
-            //    if (cl == ']')
-            //    {
-            //        leftLower = true;
-            //        result += i;
-            //        break;
-            //    }
-            //    else if (cr == ']')
-            //    {
-            //        break;
-            //    }
-
-            //    var lv = (int)char.GetNumericValue(cl);
-            //    var rv = (int)char.GetNumericValue(cr);
-            //    if (lv > rv)
-            //    {
-            //        break;
-            //    }
-            //    else
-            //    {
-            //        leftLower = true;
-            //        result += i;
-            //        break;
-            //    }
-            //}
-
-            //Console.WriteLine(leftLower);
-
-            //if (reader.CanRead)
-            //{
-            //    var empty = await reader.ReadLineAsync();
-            //    if (!string.IsNullOrEmpty(empty))
-            //    {
-            //        throw new InvalidDataException("Input contains invalid data");
-            //    }
-            //}
         }
 
-        return result.ToString();
+        return result.Sum().ToString();
     }
 
     public async Task<string> Part2(IInputReader reader)
