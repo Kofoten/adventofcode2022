@@ -1,13 +1,13 @@
 ﻿namespace AOC2022.Options;
 
-public record RuntimeOptions(int Challenge, int Part, FileInfo InputFile)
+public record RuntimeOptions(int Challenge, int Part, FileInfo InputFile, string[] ChallengeSpecificArguments)
 {
     public static bool TryParse(string[] args, [NotNullWhen(true)] out RuntimeOptions? options, [NotNullWhen(false)] out string? reason)
     {
-        if (args.Length < 2 || args.Length > 3)
+        if (args.Length < 2)
         {
             options = null;
-            reason = "Invalid number of arguments, allowed arguments are: challenge (positional: index 0, integer), part (positional: index 1, integer), inputFile (optional, positional: index 2, filename).";
+            reason = "Invalid number of arguments, allowed arguments are: challenge (positional: index 0, integer), part (positional: index 1, integer), inputFile (optional, positional: index 2, filename), challengeSpecificOptions (required if any, named, any[]).";
             return false;
         }
 
@@ -25,7 +25,14 @@ public record RuntimeOptions(int Challenge, int Part, FileInfo InputFile)
             return false;
         }
 
-        var fileName = args.Length == 3 ? args[2] : null;
+        var readCount = 2;
+        string? fileName = null;
+        if (args.Length > 2 && !args[2].StartsWith('-'))
+        {
+            fileName = args[2];
+            readCount = 3;
+        }
+
         if (!TryGetInputFile(challenge, fileName, out var inputFile))
         {
             options = null;

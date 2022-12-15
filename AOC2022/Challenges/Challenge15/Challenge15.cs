@@ -7,8 +7,8 @@ public class Challenge15 : IChallenge
     public async Task<string> Part1(IInputReader reader)
     {
         var y = 2000000;
-        var xInScanedLine = new HashSet<int>();
-        var xOfOthersInY = new HashSet<int>();
+        var xInScanedLine = new HashSet<long>();
+        var xOfOthersInY = new HashSet<long>();
 
         await foreach (var (sensor, beacon) in ReadSensorsAndBeacons(reader))
         {
@@ -34,7 +34,7 @@ public class Challenge15 : IChallenge
 
             var start = sensor.X - remainder;
             var stop = sensor.X + remainder + 1;
-            for (int i = start; i < stop; i++)
+            for (long i = start; i < stop; i++)
             {
                 xInScanedLine.Add(i);
             }
@@ -48,25 +48,52 @@ public class Challenge15 : IChallenge
     {
         var size = 4000000;
         var sbps = await ReadSensorsAndBeacons(reader).ToListAsync();
-        var unknowns = new HashSet<Point>();
+        var edgePoints = new HashSet<Point>();
 
-        for (int i = 0; i < size; i++)
+        foreach (var sbp in sbps)
         {
-            for (int j = 0; j < size; j++)
+            var radius = sbp.Radius + 1;
+            var startY = sbp.Sensor.Y - radius;
+            var stopY = sbp.Sensor.Y + radius;
+
+            for (long i = startY; i < stopY; i++)
             {
-                var position = new Point(i, j);
-                
-                if (sbps.Any(sbp => sbp.IsWithinRange(position)))
+                if (i < 0 || i > size)
                 {
                     continue;
                 }
 
-                unknowns.Add(position);
+                var distance = Math.Abs(i - sbp.Sensor.Y);
+                var remainder = radius - distance;
+
+                var leftX = sbp.Sensor.X - remainder;
+                var rightX = sbp.Sensor.X + remainder;
+
+                if (leftX >= 0 && leftX <= size)
+                {
+                    edgePoints.Add(new Point(leftX, i));
+                }
+
+                if (rightX >= 0 && rightX <= size)
+                {
+                    edgePoints.Add(new Point(rightX, i));
+                }
             }
         }
 
-        var result = unknowns.First();
-        return (result.X * 4000000 + result.Y).ToString();
+        var result = 0L;
+        foreach (var point in edgePoints)
+        {
+            if (sbps.Any(sbp => sbp.IsWithinRadius(point)))
+            {
+                continue;
+            }
+
+            result = point.X * 4000000 + point.Y;
+            break;
+        }
+
+        return result.ToString();
     }
 
     private static async IAsyncEnumerable<SensorBeaconPair> ReadSensorsAndBeacons(IInputReader reader)
@@ -81,10 +108,10 @@ public class Challenge15 : IChallenge
                 throw new InvalidDataException("Input contains invalid data");
             }
 
-            var sensorX = int.Parse(match.Groups[1].Value);
-            var sensorY = int.Parse(match.Groups[2].Value);
-            var beaconX = int.Parse(match.Groups[3].Value);
-            var beaconY = int.Parse(match.Groups[4].Value);
+            var sensorX = long.Parse(match.Groups[1].Value);
+            var sensorY = long.Parse(match.Groups[2].Value);
+            var beaconX = long.Parse(match.Groups[3].Value);
+            var beaconY = long.Parse(match.Groups[4].Value);
             
             var sensor = new Point(sensorX, sensorY);
             var beacon = new Point(beaconX, beaconY);

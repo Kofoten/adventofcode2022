@@ -2,12 +2,13 @@
 
 public record SensorBeaconPair(Point Sensor, Point Beacon)
 {
-    public bool IsWithinRange(Point position)
+    public long Radius => ManhattanDistance(Beacon);
+
+    public bool IsWithinRadius(Point position) => ManhattanDistance(position) <= Radius;
+
+    public long ManhattanDistance(Point other)
     {
-        var sbDiff = Sensor - Beacon;
-        var spDiff = Sensor - position;
-        var sbDist = Math.Abs(sbDiff.X) + Math.Abs(sbDiff.Y);
-        var spDist = Math.Abs(spDiff.X) + Math.Abs(spDiff.Y);
-        return spDist <= sbDist;
+        var diff = Sensor - other;
+        return Math.Abs(diff.X) + Math.Abs(diff.Y);
     }
 }
