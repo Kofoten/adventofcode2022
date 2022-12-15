@@ -78,6 +78,11 @@ namespace AOC2022Tests
         [DataRow(14, 1, false, "885", DisplayName = "Day 14 Part 1 Actual")]
         [DataRow(14, 2, true, "93", DisplayName = "Day 14 Part 2 Test")]
         [DataRow(14, 2, false, "28691", DisplayName = "Day 14 Part 2 Actual")]
+
+        [DataRow(15, 1, true, "26", DisplayName = "Day 15 Part 1 Test")]
+        [DataRow(15, 1, false, "5100463", DisplayName = "Day 15 Part 1 Actual")]
+        [DataRow(15, 2, true, "56000011", DisplayName = "Day 15 Part 2 Test")]
+        [DataRow(15, 2, false, "", DisplayName = "Day 15 Part 2 Actual")]
         public async Task TestRun(int challange, int part, bool useTestFile, string expected)
         {
             var inputProvider = InputFileProvider.Create();

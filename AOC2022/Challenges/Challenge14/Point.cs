@@ -18,7 +18,7 @@ public record Point(int X, int Y)
 
     public static Point operator +(Point left, Point right) => new(left.X + right.X, left.Y + right.Y);
 
-    private int NormalizeInteger(int value)
+    private static int NormalizeInteger(int value)
     {
         if (value == 0)
         {
