@@ -1,7 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
-
-namespace AOC2022.Challenges.Challenge05;
+﻿namespace AOC2022.Challenges.Challenge05;
 
 public class Challenge05 : IChallenge
 {

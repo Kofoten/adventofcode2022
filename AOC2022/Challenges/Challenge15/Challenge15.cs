@@ -4,27 +4,33 @@ namespace AOC2022.Challenges.Challenge15;
 
 public class Challenge15 : IChallenge
 {
+    private readonly Challenge15Options options;
+
+    public Challenge15(Challenge15Options options)
+    {
+        this.options = options;
+    }
+
     public async Task<string> Part1(IInputReader reader)
     {
-        var y = 2000000;
         var xInScanedLine = new HashSet<long>();
         var xOfOthersInY = new HashSet<long>();
 
         await foreach (var (sensor, beacon) in ReadSensorsAndBeacons(reader))
         {
-            if (sensor.Y == y)
+            if (sensor.Y == options.Row)
             {
                 xOfOthersInY.Add(sensor.X);
             }
 
-            if (beacon.Y == y)
+            if (beacon.Y == options.Row)
             {
                 xOfOthersInY.Add(beacon.X);
             }
 
             var diff = sensor - beacon;
             var manhattan = Math.Abs(diff.X) + Math.Abs(diff.Y);
-            var yDiff = Math.Abs(sensor.Y - y);
+            var yDiff = Math.Abs(sensor.Y - options.Row);
             var remainder = manhattan - yDiff;
 
             if (remainder < 0)
@@ -46,7 +52,6 @@ public class Challenge15 : IChallenge
 
     public async Task<string> Part2(IInputReader reader)
     {
-        var size = 4000000;
         var sbps = await ReadSensorsAndBeacons(reader).ToListAsync();
         var edgePoints = new HashSet<Point>();
 
@@ -58,7 +63,7 @@ public class Challenge15 : IChallenge
 
             for (long i = startY; i < stopY; i++)
             {
-                if (i < 0 || i > size)
+                if (i < 0 || i > options.GridSize)
                 {
                     continue;
                 }
@@ -69,12 +74,12 @@ public class Challenge15 : IChallenge
                 var leftX = sbp.Sensor.X - remainder;
                 var rightX = sbp.Sensor.X + remainder;
 
-                if (leftX >= 0 && leftX <= size)
+                if (leftX >= 0 && leftX <= options.GridSize)
                 {
                     edgePoints.Add(new Point(leftX, i));
                 }
 
-                if (rightX >= 0 && rightX <= size)
+                if (rightX >= 0 && rightX <= options.GridSize)
                 {
                     edgePoints.Add(new Point(rightX, i));
                 }

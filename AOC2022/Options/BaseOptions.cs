@@ -1,8 +1,8 @@
 ﻿namespace AOC2022.Options;
 
-public record RuntimeOptions(int Challenge, int Part, FileInfo InputFile, string[] ChallengeSpecificArguments)
+public record BaseOptions(int Challenge, int Part, FileInfo InputFile) : IOptions
 {
-    public static bool TryParse(string[] args, [NotNullWhen(true)] out RuntimeOptions? options, [NotNullWhen(false)] out string? reason)
+    public static bool TryParse(string[] args, [NotNullWhen(true)] out IOptions? options, [NotNullWhen(false)] out string? reason)
     {
         if (args.Length < 2)
         {
@@ -40,7 +40,18 @@ public record RuntimeOptions(int Challenge, int Part, FileInfo InputFile, string
             return false;
         }
 
-        options = new RuntimeOptions(challenge, part, inputFile);
+        return TryParseIfSpecific(challenge, part, inputFile, args[readCount..args.Length], out options, out reason);
+    }
+
+    public static bool TryParseIfSpecific(int challenge, int part, FileInfo inputFile, string[] challengeSpecificOptions, [NotNullWhen(true)] out IOptions? options, [NotNullWhen(false)] out string? reason) => challenge switch
+    {
+        15 => Challenge15Options.TryParse(challenge, part, inputFile, challengeSpecificOptions, out options, out reason),
+        _ => CreateBaseOptions(challenge, part, inputFile, out options, out reason),
+    };
+
+    private static bool CreateBaseOptions(int challenge, int part, FileInfo inputFile, [NotNullWhen(true)] out IOptions? options, [NotNullWhen(false)] out string? reason)
+    {
+        options = new BaseOptions(challenge, part, inputFile);
         reason = null;
         return true;
     }

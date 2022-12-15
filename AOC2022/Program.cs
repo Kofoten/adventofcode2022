@@ -4,7 +4,7 @@ internal class Program
 {
     static async Task<int> Main(string[] args)
     {
-        if (!RuntimeOptions.TryParse(args, out var options, out var reason))
+        if (!Options.BaseOptions.TryParse(args, out var options, out var reason))
         {
             Console.WriteLine($"ERROR: {reason}");
             return 1;

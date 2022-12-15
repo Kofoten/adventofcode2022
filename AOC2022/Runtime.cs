@@ -4,9 +4,9 @@ namespace AOC2022;
 
 public class Runtime
 {
-    public readonly RuntimeOptions options;
+    public readonly IOptions options;
 
-    public Runtime (RuntimeOptions options)
+    public Runtime (IOptions options)
     {
         this.options = options;
     }
@@ -21,7 +21,7 @@ public class Runtime
         IChallenge challenge;
         try
         {
-            challenge = ChallengeProvider.GetChallenge(options.Challenge);
+            challenge = ChallengeProvider.GetChallenge(options);
         }
         catch (ChallengeNotFoundException e)
         {

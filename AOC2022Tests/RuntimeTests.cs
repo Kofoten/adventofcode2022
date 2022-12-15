@@ -87,7 +87,7 @@ namespace AOC2022Tests
         {
             var inputProvider = InputFileProvider.Create();
             var file = inputProvider.GetInputFile(challange, useTestFile);
-            var options = new RuntimeOptions(challange, part, file);
+            var options = CretaeOptions(challange, part, file, challengeSpecificOptions);
             var runtime = new Runtime(options);
 
             var result = await runtime.Run();
@@ -97,6 +97,16 @@ namespace AOC2022Tests
             Assert.IsNotNull(answer);
             Assert.IsNull(error);
             Assert.AreEqual(expected, answer);
+        }
+
+        private IOptions CretaeOptions(int challange, int part, FileInfo inputFile, string[] challengeSpecificOptions)
+        {
+            if (!BaseOptions.TryParseIfSpecific(challange, part, inputFile, challengeSpecificOptions, out var options, out var _))
+            {
+                throw new InternalTestFailureException($"Could not initialize options to test challenge {challange}");
+            }
+
+            return options;
         }
     }
 }
