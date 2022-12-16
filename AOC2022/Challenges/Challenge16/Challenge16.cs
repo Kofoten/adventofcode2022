@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Reflection.PortableExecutable;
 using System.Text.RegularExpressions;
+using System.Xml;
 
 namespace AOC2022.Challenges.Challenge16;
 
@@ -7,80 +9,50 @@ public class Challenge16 : IChallenge
 {
     public async Task<string> Part1(IInputReader reader)
     {
+        var result = 0;
         var timeLimit = 30;
-        var startName = "AA";
+        var startNode = "AA";
         var caves = await ReadCavesAsync(reader).ToDictionaryAsync(x => x.Name);
-        var visits = new Dictionary<string, Path>();
-        var toCheck = new Queue<string>(new[] { startName });
+        var pressurized = caves.Where(c => c.Value.Pressure > 0).Select(c => c.Key).ToHashSet();
+        var tunnels = FindTunnels(caves, pressurized, startNode);
+        var paths = new Queue<Path>(new[] { new Path(startNode, timeLimit, 0, new HashSet<string>(pressurized)) });
 
-        while (toCheck.TryDequeue(out var caveName))
+        while (paths.TryDequeue(out var path))
         {
-            var time = 0;
-            var value = -1;
-            var opened = new HashSet<string>();
-            
-            if (visits.TryGetValue(caveName, out var path))
+            if (path.Unopened.Count == 0)
             {
-                time = path.Time;
-                value = path.Value;
-                opened = new HashSet<string>(path.Opened);
-            }
+                if (path.TotalPressureReleased > result)
+                {
+                    result = path.TotalPressureReleased;
+                }
 
-            if (time >= timeLimit)
-            {
                 continue;
             }
 
-            Path? highestNeigbour = null;
-            var cave = caves[caveName];
-            foreach (var connection in cave.Connections)
+            foreach (var targetName in path.Unopened)
             {
-                if (visits.TryGetValue(connection, out var neighbour))
+                var tunnel = tunnels[$"{path.Name}{targetName}"];
+                var remaining = path.RemainingTime - tunnel - 1;
+
+                if (remaining < 0)
                 {
-                    if (neighbour.Value > (highestNeigbour?.Value ?? -1))
+                    if (path.TotalPressureReleased > result)
                     {
-                        highestNeigbour = neighbour;
+                        result = path.TotalPressureReleased;
                     }
+
+                    continue;
                 }
-            }
 
-            var dirty = false;
-            if (highestNeigbour is not null && highestNeigbour.Value > value)
-            {
-                time = highestNeigbour.Time + 1;
-                value = highestNeigbour.Value;
-                opened = new HashSet<string>(highestNeigbour.Opened);
-                dirty = true;
-            }
-
-            if (!opened.Contains(caveName) && cave.Pressure > 0)
-            {
-                time++;
-                var remaining = timeLimit - time;
-                value = cave.Pressure * remaining + (highestNeigbour?.Value ?? 0);
-                opened.Add(caveName);
-                dirty = true;
-            }
-
-            if (time > timeLimit)
-            {
-                continue;
-            }
-
-            if (dirty || highestNeigbour is null)
-            {
-                visits[caveName] = new Path(time, value == -1 ? 0: value, opened);
-                foreach (var connection in cave.Connections)
-                {
-                    if (!toCheck.Contains(connection))
-                    {
-                        toCheck.Enqueue(connection);
-                    }
-                }
+                var unopened = new HashSet<string>(path.Unopened);
+                unopened.Remove(targetName);
+                var total = path.TotalPressureReleased + caves[targetName].Pressure * remaining;
+                var newPath = new Path(targetName, remaining, total, unopened);
+                paths.Enqueue(newPath);
             }
         }
 
-        return visits.Values.Select(v => v.Value).Max().ToString();
+        return result.ToString();
     }
 
     public async Task<string> Part2(IInputReader reader)
@@ -106,5 +78,49 @@ public class Challenge16 : IChallenge
 
             yield return new Cave(name, pressure, connections);
         }
+    }
+
+    public static IDictionary<string, int> FindTunnels(IDictionary<string, Cave> caves, HashSet<string> pressurized, string startNode)
+    {
+        var tunnels = new Dictionary<string, int>();
+
+        foreach (var cave in pressurized.Append(startNode).Select(n => caves[n]))
+        {
+            var finders = new Queue<TunnelFinder>(cave.Connections.Select(c => new TunnelFinder(c)));
+            while (finders.TryDequeue(out var finder))
+            {
+                if (finder.CurrentName == cave.Name)
+                {
+                    continue;
+                }
+
+                var current = caves[finder.CurrentName];
+                if (current.Pressure > 0 || current.Name == startNode)
+                {
+                    var key = $"{cave.Name}{current.Name}";
+                    if (tunnels.TryGetValue(key, out var travelTime))
+                    {
+                        if (finder.Visited.Count < travelTime)
+                        {
+                            tunnels[key] = finder.Visited.Count;
+                        }
+                    }
+                    else
+                    {
+                        tunnels.Add(key, finder.Visited.Count);
+                    }
+                }
+
+                foreach (var connection in current.Connections)
+                {
+                    if (!finder.Visited.Contains(connection))
+                    {
+                        finders.Enqueue(finder.Add(connection));
+                    }
+                }
+            }
+        }
+
+        return tunnels;
     }
 }

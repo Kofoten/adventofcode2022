@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace AOC2022.Challenges.Challenge15;
 
@@ -55,39 +56,80 @@ public class Challenge15 : IChallenge
         var sbps = await ReadSensorsAndBeacons(reader).ToListAsync();
         var edgePoints = new HashSet<Point>();
 
+        var lines = new HashSet<Line>();
         foreach (var sbp in sbps)
         {
             var radius = sbp.Radius + 1;
-            var startY = sbp.Sensor.Y - radius;
-            var stopY = sbp.Sensor.Y + radius;
-
-            for (long i = startY; i < stopY; i++)
+            var xOffset = new Point(radius, 0);
+            var yOffset = new Point(0, radius);
+            var left = sbp.Sensor - xOffset;
+            var right = sbp.Sensor + xOffset;
+            var bottom = sbp.Sensor - yOffset;
+            var top = sbp.Sensor + yOffset;
+            var newLines = new[]
             {
-                if (i < 0 || i > options.GridSize)
+                Line.Create(left, top),
+                Line.Create(left, bottom),
+                Line.Create(top, right),
+                Line.Create(bottom, right),
+            };
+
+            for (int i = 0; i < newLines.Length; i++)
+            {
+                var toRemove = new HashSet<Line>();
+                foreach (var line in lines)
+                {
+                    if (newLines[i].TryCombineWith(line, out var combined))
+                    {
+                        toRemove.Add(line);
+                        newLines[i] = combined;
+                    }
+                }
+
+                lines.ExceptWith(toRemove);
+                lines.Add(newLines[i]);
+            }
+        }
+
+        var intersections = new HashSet<Point>();
+        foreach (var line in lines)
+        {
+            foreach (var other in lines)
+            {
+                if (line == other)
                 {
                     continue;
                 }
 
-                var distance = Math.Abs(i - sbp.Sensor.Y);
-                var remainder = radius - distance;
-
-                var leftX = sbp.Sensor.X - remainder;
-                var rightX = sbp.Sensor.X + remainder;
-
-                if (leftX >= 0 && leftX <= options.GridSize)
+                if (line.TryFindIntersection(other, out var intersection))
                 {
-                    edgePoints.Add(new Point(leftX, i));
-                }
+                    if (intersection.X < 0)
+                    {
+                        continue;
+                    }
 
-                if (rightX >= 0 && rightX <= options.GridSize)
-                {
-                    edgePoints.Add(new Point(rightX, i));
+                    if (intersection.Y < 0)
+                    {
+                        continue;
+                    }
+
+                    if (intersection.X > options.GridSize)
+                    {
+                        continue;
+                    }
+
+                    if (intersection.Y > options.GridSize)
+                    {
+                        continue;
+                    }
+
+                    intersections.Add(intersection);
                 }
             }
         }
 
         var result = 0L;
-        foreach (var point in edgePoints)
+        foreach (var point in intersections)
         {
             if (sbps.Any(sbp => sbp.IsWithinRadius(point)))
             {
