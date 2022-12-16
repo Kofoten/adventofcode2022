@@ -40,7 +40,7 @@ public record BaseOptions(int Challenge, int Part, FileInfo InputFile) : IOption
             return false;
         }
 
-        return TryParseIfSpecific(challenge, part, inputFile, args[readCount..args.Length], out options, out reason);
+        return TryParseIfSpecific(challenge, part, inputFile, args[readCount..], out options, out reason);
     }
 
     public static bool TryParseIfSpecific(int challenge, int part, FileInfo inputFile, string[] challengeSpecificOptions, [NotNullWhen(true)] out IOptions? options, [NotNullWhen(false)] out string? reason) => challenge switch

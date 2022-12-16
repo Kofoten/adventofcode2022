@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace AOC2022.Challenges.Challenge16;
 
@@ -12,56 +13,74 @@ public class Challenge16 : IChallenge
         var visits = new Dictionary<string, Path>();
         var toCheck = new Queue<string>(new[] { startName });
 
-        var start = caves[startName];
-        var startPressure = (timeLimit - 1) * start.Pressure;
-        var startVisit = new Path(null, startPressure == 0 ? 0 : 1, startPressure, new HashSet<string>());
-        if (startPressure != 0)
-        {
-            startVisit.Opened.Add(startName);
-        }
-        visits.Add(startName, startVisit);
-
         while (toCheck.TryDequeue(out var caveName))
         {
-            var currentVisit = visits[caveName];
-            if (currentVisit.Time >= timeLimit)
+            var time = 0;
+            var value = -1;
+            var opened = new HashSet<string>();
+            
+            if (visits.TryGetValue(caveName, out var path))
+            {
+                time = path.Time;
+                value = path.Value;
+                opened = new HashSet<string>(path.Opened);
+            }
+
+            if (time >= timeLimit)
             {
                 continue;
             }
 
-            var currentCave = caves[caveName];
-            foreach (var connection in currentCave.Connections)
+            Path? highestNeigbour = null;
+            var cave = caves[caveName];
+            foreach (var connection in cave.Connections)
             {
-                var opened = new HashSet<string>(currentVisit.Opened);
-                if (!visits.TryGetValue(connection, out var visit))
+                if (visits.TryGetValue(connection, out var neighbour))
                 {
-                    visit = new Path(connection, currentVisit.Time + 1, 0, opened);
-                }
-
-                if (!opened.Contains(connection))
-                {
-                    var time = currentVisit.Time + 2;
-                    var remainingTime = timeLimit - time;
-                    var totalPressure = remainingTime * caves[connection].Pressure + currentVisit.Value;
-                    if (visit.Value < totalPressure)
+                    if (neighbour.Value > (highestNeigbour?.Value ?? -1))
                     {
-                        opened.Add(connection);
-                        visit = new Path(caveName, time, totalPressure, opened);
+                        highestNeigbour = neighbour;
                     }
                 }
+            }
 
-                if (visit.Time > timeLimit)
+            var dirty = false;
+            if (highestNeigbour is not null && highestNeigbour.Value > value)
+            {
+                time = highestNeigbour.Time + 1;
+                value = highestNeigbour.Value;
+                opened = new HashSet<string>(highestNeigbour.Opened);
+                dirty = true;
+            }
+
+            if (!opened.Contains(caveName) && cave.Pressure > 0)
+            {
+                time++;
+                var remaining = timeLimit - time;
+                value = cave.Pressure * remaining + (highestNeigbour?.Value ?? 0);
+                opened.Add(caveName);
+                dirty = true;
+            }
+
+            if (time > timeLimit)
+            {
+                continue;
+            }
+
+            if (dirty || highestNeigbour is null)
+            {
+                visits[caveName] = new Path(time, value == -1 ? 0: value, opened);
+                foreach (var connection in cave.Connections)
                 {
-                    continue;
+                    if (!toCheck.Contains(connection))
+                    {
+                        toCheck.Enqueue(connection);
+                    }
                 }
-
-                visits[connection] = visit;
-                toCheck.Enqueue(connection);
             }
         }
-        
 
-        return "asd";
+        return visits.Values.Select(v => v.Value).Max().ToString();
     }
 
     public async Task<string> Part2(IInputReader reader)
