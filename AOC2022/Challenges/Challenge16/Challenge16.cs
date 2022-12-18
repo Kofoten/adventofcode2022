@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using AOC2022.Data;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection.PortableExecutable;
 using System.Text.RegularExpressions;
 using System.Xml;
@@ -10,16 +11,17 @@ public class Challenge16 : IChallenge
     public async Task<string> Part1(IInputReader reader)
     {
         var result = 0;
-        var timeLimit = 30;
         var startNode = "AA";
+        var timeLimit = 30;
+
         var caves = await ReadCavesAsync(reader).ToDictionaryAsync(x => x.Name);
-        var pressurized = caves.Where(c => c.Value.Pressure > 0).Select(c => c.Key).ToHashSet();
+        var pressurized = caves.Where(c => c.Value.FlowRate > 0).Select(c => c.Key).ToHashSet();
         var tunnels = FindTunnels(caves, pressurized, startNode);
-        var paths = new Queue<Path>(new[] { new Path(startNode, timeLimit, 0, new HashSet<string>(pressurized)) });
+        var paths = new Queue<Path>(new[] { new Path(startNode, timeLimit, 0, new HashSet<string>()) });
 
         while (paths.TryDequeue(out var path))
         {
-            if (path.Unopened.Count == 0)
+            if (path.Open.Count == pressurized.Count)
             {
                 if (path.TotalPressureReleased > result)
                 {
@@ -29,7 +31,7 @@ public class Challenge16 : IChallenge
                 continue;
             }
 
-            foreach (var targetName in path.Unopened)
+            foreach (var targetName in pressurized.Except(path.Open))
             {
                 var tunnel = tunnels[$"{path.Name}{targetName}"];
                 var remaining = path.RemainingTime - tunnel - 1;
@@ -44,11 +46,7 @@ public class Challenge16 : IChallenge
                     continue;
                 }
 
-                var unopened = new HashSet<string>(path.Unopened);
-                unopened.Remove(targetName);
-                var total = path.TotalPressureReleased + caves[targetName].Pressure * remaining;
-                var newPath = new Path(targetName, remaining, total, unopened);
-                paths.Enqueue(newPath);
+                paths.Enqueue(path.AddNode(targetName, remaining, caves[targetName].FlowRate));
             }
         }
 
@@ -57,7 +55,37 @@ public class Challenge16 : IChallenge
 
     public async Task<string> Part2(IInputReader reader)
     {
-        throw new PartNotImplementedException(2);
+        var result = 0;
+        var startNode = "AA";
+        var timeLimit = 26;
+
+        var caves = await ReadCavesAsync(reader).ToDictionaryAsync(x => x.Name);
+        var pressurized = caves.Where(c => c.Value.FlowRate > 0).Select(c => c.Key).ToHashSet();
+        var tunnels = FindTunnels(caves, pressurized, startNode);
+        var paths = new Queue<Path>(new[] { new Path(startNode, timeLimit, 0, new HashSet<string>()) });
+
+        while (paths.TryDequeue(out var path))
+        {
+            if (path.Open.Count == pressurized.Count)
+            {
+                continue;
+            }
+
+            foreach (var targetName in pressurized.Except(path.Open))
+            {
+                var tunnel = tunnels[$"{path.Name}{targetName}"];
+                var remaining = path.RemainingTime - tunnel - 1;
+
+                if (remaining < 0)
+                {
+                    continue;
+                }
+
+                paths.Enqueue(path.AddNode(targetName, remaining, caves[targetName].FlowRate));
+            }
+        }
+
+        return result.ToString();
     }
 
     public static async IAsyncEnumerable<Cave> ReadCavesAsync(IInputReader reader)
@@ -95,7 +123,7 @@ public class Challenge16 : IChallenge
                 }
 
                 var current = caves[finder.CurrentName];
-                if (current.Pressure > 0 || current.Name == startNode)
+                if (current.FlowRate > 0 || current.Name == startNode)
                 {
                     var key = $"{cave.Name}{current.Name}";
                     if (tunnels.TryGetValue(key, out var travelTime))
