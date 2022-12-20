@@ -58,21 +58,20 @@ public class Challenge20 : IChallenge
                     target = target.Next;
                 }
 
+                number.Remove();
 
                 if (number.Value < 0)
                 {
                     //var target = number.Reverse(steps);
                     var alt = number.Reverse(absolute);
-                    number.Insert(target.Previous, target);
+                    number.Insert(alt.Previous, alt);
                 }
                 else
                 {
                     //var target = number.Forward(steps);
                     var alt = number.Forward(absolute);
-                    number.Insert(target, target.Next);
+                    number.Insert(alt, alt.Next);
                 }
-
-                number.Remove();
             }
         }
 
