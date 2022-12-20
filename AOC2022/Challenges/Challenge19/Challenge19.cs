@@ -39,6 +39,7 @@ public class Challenge19 : IChallenge
                     throw new InvalidDataException("Input contains invalid data");
                 }
 
+                yield return new object();
                 var robotType = robotMatch.Groups[1].Value;
             }
         }
