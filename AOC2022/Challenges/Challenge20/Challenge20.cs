@@ -27,7 +27,8 @@ public class Challenge20 : IChallenge
 
     public async Task<string> Part2(IInputReader reader)
     {
-        var result = await Decrypt(reader, 10, 811589153);
+        // var result = await Decrypt(reader, 10, 811589153);
+        var result = 0L;
         return result.ToString();
     }
 
@@ -53,7 +54,7 @@ public class Challenge20 : IChallenge
                 }
 
                 var target = number;
-                for (int j = 0; j < steps; j++)
+                for (int j = 1; j < steps; j++)
                 {
                     target = target.Next;
                 }
@@ -62,15 +63,19 @@ public class Challenge20 : IChallenge
 
                 if (number.Value < 0)
                 {
+                    var al2 = target.Previous;
                     //var target = number.Reverse(steps);
                     var alt = number.Reverse(absolute);
-                    number.Insert(alt.Previous, alt);
+                    //number.Insert(alt.Previous, alt);
+                    number.Insert(target.Previous, target);
                 }
                 else
                 {
                     //var target = number.Forward(steps);
+                    var alt2 = target.Next;
                     var alt = number.Forward(absolute);
-                    number.Insert(alt, alt.Next);
+                    //number.Insert(alt, alt.Next);
+                    number.Insert(target, target.Next);
                 }
             }
         }
